@@ -1,0 +1,96 @@
+{
+  "id": "excel-model-auditor",
+  "name": "Excel Model Auditor",
+  "tagline": "Audit Excel financial models for errors, inconsistencies, and best practices",
+  "description": "Parses Excel workbooks to detect hardcoded overrides in formula rows, inconsistent formulas, circular references, broken references, sign convention errors, and structural issues. Produces a Model Health Score (0-100) and a detailed findings report with cell-level fix suggestions.",
+  "category": "Finance",
+  "tags": [
+    "financial-modeling",
+    "excel-audit",
+    "model-review",
+    "LBO",
+    "DCF",
+    "three-statement-model",
+    "PE",
+    "private-equity",
+    "investment-banking",
+    "quality-assurance"
+  ],
+  "icon": "file-spreadsheet",
+  "version": "1.0.0",
+  "estimatedTokenBudget": 100000,
+  "dependencies": ["openpyxl"],
+  "inputs": {
+    "schema": [
+      {
+        "key": "file",
+        "label": "Excel Model",
+        "type": "filePicker",
+        "required": true,
+        "accept": [".xlsx", ".xlsm"],
+        "multiple": false,
+        "description": "Select the Excel financial model to audit"
+      },
+      {
+        "key": "audit_depth",
+        "label": "Audit Depth",
+        "type": "select",
+        "required": true,
+        "options": [
+          {
+            "value": "quick",
+            "label": "Quick",
+            "description": "Error cells, hardcoded values in formula rows, basic consistency (~30s)"
+          },
+          {
+            "value": "standard",
+            "label": "Standard",
+            "description": "Quick + cross-sheet refs, named ranges, circulars, sign conventions (~2min)"
+          },
+          {
+            "value": "deep",
+            "label": "Deep",
+            "description": "Standard + BS balance, CF tie-out, external links, sensitivity checks (~5min)"
+          }
+        ],
+        "default": "standard"
+      },
+      {
+        "key": "focus_areas",
+        "label": "Focus Areas",
+        "type": "checkboxGroup",
+        "required": false,
+        "options": [
+          { "value": "formulas", "label": "Formula Consistency" },
+          { "value": "references", "label": "Cross-Sheet References" },
+          { "value": "errors", "label": "Error Cells (#REF, #N/A, etc.)" },
+          { "value": "assumptions", "label": "Assumption Cell Hygiene" },
+          { "value": "formatting", "label": "Formatting & Structure" },
+          { "value": "circulars", "label": "Circular References" },
+          { "value": "links", "label": "External Links" },
+          { "value": "all", "label": "All Areas" }
+        ],
+        "default": ["all"],
+        "description": "Select specific areas to emphasize, or 'All Areas' for a comprehensive audit"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": {
+      "type": "markdown",
+      "label": "Audit Report",
+      "description": "Full audit report with Model Health Score, critical issues, warnings, and informational items"
+    },
+    "secondary": {
+      "type": "table",
+      "label": "All Findings",
+      "description": "Flat, sortable table of every finding with severity, location, description, and fix suggestion"
+    }
+  },
+  "permissions": {
+    "fileRead": ["*.xlsx", "*.xlsm"],
+    "fileWrite": ["output/*"],
+    "network": false,
+    "tools": ["Read", "Write", "Bash(python3 *)"]
+  }
+}

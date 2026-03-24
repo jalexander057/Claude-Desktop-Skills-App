@@ -1167,9 +1167,23 @@ PE analysts are not browsing Product Hunt. They're behind corporate firewalls, u
 **Mitigation:**
 - Target boutique and mid-market firms first (less IT bureaucracy than megafunds)
 - Content marketing on finance-specific channels (LinkedIn, finance podcasts, CFA/CAIA communities)
-- Free tier removes the "let me ask IT" barrier
-- Build case studies early with beta users
+- Demo-tier removes the "let me ask IT" barrier for initial testing
+- Build case studies early with beta users showing hours saved and ROI
 - Consider a "portable" version that doesn't require admin install
+- **Your best channel is probably direct outreach + warm intros**, not inbound marketing. 10 design partners from your network is worth more than 1,000 website visitors.
+
+### Risk 6: You Can't Build Skills Fast Enough
+
+**Likelihood:** Medium
+**Impact:** Medium
+
+You're the sole skill author. Subscribers expect a growing library. If you're spending all your time on app development, support, and sales, the skill library stagnates and churn increases.
+
+**Mitigation:**
+- Skills are markdown + prompt engineering. They're fast to author once you have the patterns down. Budget 40% of your time for skill development.
+- Enterprise custom skill work funds and informs library expansion.
+- In Year 2, consider an invite-only skill author program where vetted finance professionals contribute skills for revenue share.
+- Prioritize skill quality over quantity. 15 excellent skills beat 50 mediocre ones.
 
 ### Risk 6: Claude Code Requires Paid Subscription You Can't Bundle
 
@@ -1189,13 +1203,13 @@ If Claude Code changes its pricing model or requires a separate paid subscriptio
 
 ### Product
 
-1. **Should the app be a standalone app or a Claude Desktop extension?** Claude Desktop supports MCP Desktop Extensions. Building as an extension might get you distribution through Claude Desktop's install base, but limits your UI freedom and creates deeper Anthropic dependency.
+1. **Should the app be a standalone app or a Claude Desktop extension?** Claude Desktop supports MCP Desktop Extensions. Building as an extension might get you distribution through Claude Desktop's install base, but limits your UI freedom and makes it harder to control the update pipeline. Recommendation: standalone app for now, but design skills to be compatible with Claude Desktop extensions as a future distribution channel.
 
-2. **Should you support non-Claude models?** If a user has an OpenAI or Gemini API key instead, should the skills work with those? This dramatically increases engineering scope but also increases TAM.
+2. **Should you support non-Claude models?** If a user has an OpenAI or Gemini API key instead, should the skills work with those? This dramatically increases engineering scope but also increases TAM. **Recommendation: No for MVP. Claude-only simplifies everything. Revisit only if Claude dependency becomes a real risk.**
 
-3. **How do you handle skills that need external dependencies?** The Deal Deck Builder needs `python-pptx`. Do you bundle a Python runtime? Require the user to install Python? Use a containerized runtime?
+3. **How do you handle skills that need external dependencies?** The Deal Deck Builder needs `python-pptx`. Options: (a) bundle a Python runtime with the app (~50 MB), (b) require the user to install Python (friction), (c) use a lightweight containerized runtime (complexity), (d) use `uv` for zero-config Python dependency management (promising). **This needs a prototype to determine the right approach.**
 
-4. **Should skills be able to persist state between runs?** E.g., a "Deal Tracker" skill that remembers all the deals you've analyzed. This creates data management complexity but could be very valuable.
+4. **Should skills be able to persist state between runs?** E.g., a "Deal Tracker" skill that remembers all the deals you've analyzed. This creates data management complexity but could be very valuable for workflows like "compare this quarter's financials to last quarter's extraction."
 
 ### Technical
 
@@ -1209,15 +1223,17 @@ If Claude Code changes its pricing model or requires a separate paid subscriptio
 
 ### Business
 
-9. **Do you need a EULA or ToS review by a lawyer before distributing to finance firms?** Almost certainly yes. Budget for this.
+9. **Do you need a EULA or ToS review by a lawyer before distributing to finance firms?** Almost certainly yes. Budget $3-5K for this. Key clauses: output accuracy disclaimer, limitation of liability, data handling commitments, IP ownership of skill output.
 
-10. **Do you need E&O insurance?** If your skills produce financial analysis that someone relies on, you may have professional liability exposure. Consult with an insurance broker.
+10. **Do you need E&O insurance?** If your skills produce financial analysis that someone relies on, you may have professional liability exposure. Consult with an insurance broker. Budget $2-5K/year for a startup E&O policy.
 
-11. **How do you handle firms that want to run the skill registry on-prem?** This is a common enterprise request in finance. It's expensive to support but may be required for large deals.
+11. **How do you handle firms that want to run the update server on-prem?** This is a common enterprise request in finance. It's expensive to support but may be required for $100K+ deals. **Recommendation: defer to Phase 4. For now, the update server is your cloud, and skills are cached locally. The app works offline with cached skills. This should satisfy most security reviews.**
 
-12. **What's the IP status of skills?** If a user creates a custom skill using your authoring tools, who owns it? If a skill produces output that looks like a proprietary template, does the firm own that output format?
+12. **What's the IP status of custom skills?** When you build a custom skill for an Enterprise customer, who owns it? **Recommendation: you retain IP on the skill logic/prompts, they own any firm-specific templates or configurations embedded in the skill. Define this clearly in the Enterprise agreement.**
 
-13. **Should you engage Anthropic's partnerships team before building?** Getting their blessing (or at least non-objection) reduces Risk #1 significantly. They may even want to promote you as a showcase for the plugin ecosystem.
+13. **Should you engage Anthropic's partnerships team before building?** Yes, do this in Month 1. Getting their non-objection (or better, endorsement) dramatically reduces your biggest risk. They may want to promote you as a vertical showcase for the plugin ecosystem. At minimum, you want to know if they plan to build a competing product in the next 12 months.
+
+14. **What happens if a firm's Claude subscription lapses or changes?** Your app depends on the user having Claude Code access. If Anthropic changes pricing or a firm drops their Claude subscription, your app becomes useless. **You need a clear communication in onboarding: "SkillKit requires an active Claude Pro/Team/Enterprise subscription."**
 
 ---
 
@@ -1225,21 +1241,52 @@ If Claude Code changes its pricing model or requires a separate paid subscriptio
 
 | Competitor | What They Do | How You Differ |
 |---|---|---|
-| **Claude Code CLI** | The runtime you build on | You add GUI, curation, team management |
-| **Anthropic Plugin Marketplace** | Horizontal plugin discovery | You go vertical with curated, supported skill packs |
-| **Smithery** | MCP server discovery platform | They're tool-focused, you're workflow-focused |
-| **Dust.tt** | AI workflow builder for teams | Cloud-hosted, processes customer data. You're local-first |
-| **Relevance AI** | AI agent builder | Cloud-hosted SaaS. You're local-first |
-| **Custom GPTs (OpenAI)** | Similar concept, different ecosystem | You're Claude-native, local-first, and finance-specialized |
-| **Internal firm tools** | Custom-built by firm's tech team | You're faster to deploy, cheaper, and maintained by you |
+| **Claude Code CLI** | The runtime you build on | You add GUI, managed skill library, and team management. Complementary, not competitive. |
+| **Anthropic Plugin Marketplace** | Horizontal plugin discovery (9K+ plugins) | They're a platform. You're a product. They host anyone's plugins. You ship your own, continuously improved skills for a specific vertical. |
+| **Smithery / MCP registries** | MCP server discovery | Tool-level, developer-focused. You're workflow-level, analyst-focused. |
+| **Dust.tt** | AI workflow builder for teams | Cloud-hosted, processes customer data. You're local-first. They're horizontal, you're vertical. |
+| **Custom GPTs (OpenAI)** | Similar concept, different ecosystem | Cloud-only, no local processing, limited to OpenAI. You're Claude-native, local-first, and finance-specialized. |
+| **Internal firm tools** | Custom-built by firm's tech team | You're faster to deploy, cheaper, continuously improving, and don't require the firm to hire AI engineers. |
+| **Indie prompt libraries** | Collections of prompts sold as PDFs/Notion docs | No execution layer, no GUI, no updates. You're an executable product, not a document. |
+| **Big 4 / consulting AI tools** | Deloitte, McKinsey building internal AI workflows | Not available to buy. Your product gives mid-market firms the same capabilities without Big 4 fees. |
 
 ## Appendix B: Decision Log
 
 | Decision | Choice | Alternatives Considered | Rationale |
 |---|---|---|---|
+| Business model | Managed skill library SaaS (you author all skills) | Open marketplace, platform for third-party authors | Stronger moat via domain expertise, full quality control, simpler to start, avoids marketplace liability |
 | Desktop framework | Tauri v2 | Electron, Flutter Desktop, Swift (native) | Security narrative, binary size, Rust backend for process management |
-| Skill format | Claude Code plugin + skillkit.json overlay | Custom format, VS Code extension format | Compatibility with existing ecosystem, no lock-in |
-| Data architecture | Local-first, no data on your servers | Cloud-processed, hybrid | Core security requirement, liability minimization |
-| Monetization | Skill pack subscription | Per-skill, usage-based, freemium-with-ads | Predictable revenue, low friction, aligns incentives |
+| Skill format | Claude Code plugin + skillkit.json overlay | Custom format, VS Code extension format | Compatibility with existing ecosystem, no lock-in, skills work in both your app and CLI |
+| Distribution | Your own app with live push updates | Claude Code marketplace, npm, direct download | Controlled delivery channel, update pipeline is a key differentiator, SaaS metrics |
+| Data architecture | Local-first, no customer data on your servers | Cloud-processed, hybrid | Core security requirement, liability minimization, finance firm procurement requirement |
+| Monetization | Library subscription ($49-250/seat/month) | Per-skill, usage-based, one-time purchase | Predictable revenue, funds ongoing skill development, increasing value over time |
 | Initial vertical | PE / Finance | Legal, consulting, healthcare | Highest willingness to pay, clearest pain points, author's domain expertise |
-| Platform | macOS first | Cross-platform from day 1 | Finance professionals overwhelmingly use macOS. Faster to ship one platform. |
+| Platform | macOS first | Cross-platform from day 1 | Finance professionals overwhelmingly use macOS at boutique/mid-market firms. Faster to ship one platform. |
+
+## Appendix C: Your Skill Development Pipeline
+
+Since you are the skill author, you need a development workflow:
+
+```
+1. Identify workflow   -- Talk to analysts, watch them work, find the 2-4 hour manual task
+2. Prototype skill     -- Write SKILL.md + skillkit.json locally, test with real documents
+3. QA with real data   -- Run against a corpus of real financial documents (anonymized)
+                          Verify extracted values against known answers
+                          Test edge cases (scanned PDFs, non-standard formats, multi-currency)
+4. Write tests         -- Automated regression tests for each skill (input doc -> expected output)
+5. Push to staging     -- Deploy to your internal test instance of the update server
+6. Beta test           -- Push to 2-3 trusted users, collect feedback
+7. Ship                -- Push to all subscribers via the live update pipeline
+8. Monitor + iterate   -- Track execution success/failure rates, user feedback, common errors
+```
+
+**Skill authoring tools you'll want:**
+- A private GitHub repo with one directory per skill
+- CI that runs skill regression tests on every push
+- A staging environment where you can test the full flow (app -> skill -> output)
+- A feedback mechanism in the app ("Was this output helpful? Y/N + comment")
+
+**Estimated time per skill:**
+- Simple extraction skill (PDF -> table): 1-2 days
+- Complex workflow skill (multi-file -> formatted output): 3-5 days
+- Custom enterprise skill (firm-specific templates): 2-5 days + client iteration

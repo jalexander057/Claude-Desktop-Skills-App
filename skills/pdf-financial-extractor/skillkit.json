@@ -1,0 +1,95 @@
+{
+  "id": "pdf-financial-extractor",
+  "name": "PDF Financial Extractor",
+  "tagline": "Extract and normalize financial metrics from PDFs into structured tables",
+  "description": "Reads 10-Ks, CIMs, pitch decks, and audited financials. Extracts key financial metrics, normalizes units and currencies, aligns time periods, and outputs a source-cited table with confidence scores.",
+  "category": "Finance",
+  "tags": [
+    "financial-analysis",
+    "pdf-extraction",
+    "10-K",
+    "CIM",
+    "due-diligence",
+    "PE",
+    "private-equity",
+    "financial-statements",
+    "EBITDA",
+    "data-extraction"
+  ],
+  "icon": "file-search",
+  "version": "1.0.0",
+  "estimatedTokenBudget": 100000,
+  "inputs": {
+    "schema": [
+      {
+        "key": "files",
+        "label": "Financial Documents",
+        "type": "fileDropZone",
+        "required": true,
+        "accept": [".pdf"],
+        "multiple": true,
+        "minFiles": 1,
+        "maxFiles": 10,
+        "description": "Drop 10-Ks, CIMs, pitch decks, or audited financials here"
+      },
+      {
+        "key": "metrics",
+        "label": "Metrics to Extract",
+        "type": "tagInput",
+        "required": false,
+        "defaults": [
+          "Revenue",
+          "EBITDA",
+          "Adjusted EBITDA",
+          "Net Income",
+          "Total Debt",
+          "Cash",
+          "Gross Margin",
+          "Capex",
+          "Free Cash Flow",
+          "Net Debt / EBITDA"
+        ],
+        "placeholder": "Add a metric...",
+        "description": "Leave defaults or customize. If empty, all core metrics are extracted."
+      },
+      {
+        "key": "output_format",
+        "label": "Output Format",
+        "type": "radioGroup",
+        "required": true,
+        "options": [
+          { "value": "table", "label": "Markdown Table" },
+          { "value": "excel", "label": "Excel / CSV" },
+          { "value": "json", "label": "JSON" }
+        ],
+        "default": "table"
+      },
+      {
+        "key": "time_periods",
+        "label": "Time Periods",
+        "type": "text",
+        "required": false,
+        "placeholder": "e.g., FY2022, FY2023, LTM Q3 2024",
+        "description": "Optional. Specify periods to focus on, or leave blank to extract all available periods."
+      }
+    ]
+  },
+  "outputs": {
+    "primary": {
+      "type": "table",
+      "label": "Extracted Financial Metrics",
+      "description": "Normalized metrics table with source citations and confidence scores"
+    },
+    "secondary": {
+      "type": "markdown",
+      "label": "Extraction Notes",
+      "description": "Document summaries, EBITDA bridges, discrepancies, assumptions, and data quality warnings"
+    }
+  },
+  "permissions": {
+    "fileRead": ["*.pdf"],
+    "fileWrite": ["output/*"],
+    "network": false,
+    "tools": ["Read", "Write", "Bash(python3 *)"]
+  }
+}

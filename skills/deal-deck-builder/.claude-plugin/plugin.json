@@ -1,0 +1,7 @@
+{
+  "name": "deal-deck-builder",
+  "description": "Generate professionally formatted Investment Committee PowerPoint decks from company financials and CIM data. Supports LBO, Growth Equity, Add-On, and Recap deal types.",
+  "version": "1.0.0",
+  "author": { "name": "SkillKit" },
+  "license": "Proprietary"
+}

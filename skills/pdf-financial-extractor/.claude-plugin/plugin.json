@@ -1,0 +1,7 @@
+{
+  "name": "pdf-financial-extractor",
+  "description": "Extract and normalize key financial metrics from 10-Ks, CIMs, pitch decks, and audited financials into structured, source-cited tables with confidence scoring.",
+  "version": "1.0.0",
+  "author": { "name": "SkillKit" },
+  "license": "Proprietary"
+}

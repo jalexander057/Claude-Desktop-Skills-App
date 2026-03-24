@@ -1,0 +1,7 @@
+{
+  "name": "excel-model-auditor",
+  "description": "Audit Excel financial models for formula errors, hardcoded overrides, circular references, and structural issues. Generates a Model Health Score and detailed remediation report.",
+  "version": "1.0.0",
+  "author": { "name": "SkillKit" },
+  "license": "Proprietary"
+}

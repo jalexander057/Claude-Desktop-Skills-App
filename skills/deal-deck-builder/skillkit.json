@@ -1,0 +1,116 @@
+{
+  "id": "deal-deck-builder",
+  "name": "Deal Deck Builder",
+  "tagline": "Generate Investment Committee PowerPoint decks from financial data",
+  "description": "Reads company financials from Excel/CSV and optional CIM/teaser PDFs, then generates a professionally formatted PowerPoint IC deck using python-pptx. Supports LBO, Growth Equity, Add-On, and Recap deal types with customizable sections and template styles.",
+  "category": "Finance",
+  "tags": [
+    "IC-deck",
+    "investment-committee",
+    "PowerPoint",
+    "deal-presentation",
+    "LBO",
+    "growth-equity",
+    "PE",
+    "private-equity",
+    "pitch-deck",
+    "pptx-generation"
+  ],
+  "icon": "presentation",
+  "version": "1.0.0",
+  "estimatedTokenBudget": 120000,
+  "dependencies": ["openpyxl", "python-pptx"],
+  "inputs": {
+    "schema": [
+      {
+        "key": "financials_file",
+        "label": "Company Financials",
+        "type": "filePicker",
+        "required": true,
+        "accept": [".xlsx", ".csv"],
+        "multiple": false,
+        "description": "Excel or CSV file containing historical and/or projected financials"
+      },
+      {
+        "key": "cim_file",
+        "label": "CIM / Teaser (Optional)",
+        "type": "filePicker",
+        "required": false,
+        "accept": [".pdf"],
+        "multiple": false,
+        "description": "Optional CIM, teaser, or company overview PDF for qualitative content"
+      },
+      {
+        "key": "deal_type",
+        "label": "Deal Type",
+        "type": "select",
+        "required": true,
+        "options": [
+          { "value": "lbo", "label": "Leveraged Buyout (LBO)" },
+          { "value": "growth_equity", "label": "Growth Equity" },
+          { "value": "add_on", "label": "Add-On Acquisition" },
+          { "value": "recap", "label": "Recapitalization" }
+        ],
+        "default": "lbo"
+      },
+      {
+        "key": "sections",
+        "label": "Sections to Include",
+        "type": "checkboxGroup",
+        "required": false,
+        "options": [
+          { "value": "executive_summary", "label": "Executive Summary" },
+          { "value": "company_overview", "label": "Company Overview" },
+          { "value": "market_analysis", "label": "Market Analysis" },
+          { "value": "financial_summary", "label": "Financial Summary" },
+          { "value": "deal_structure", "label": "Deal Structure (Sources & Uses)" },
+          { "value": "returns_analysis", "label": "Returns Analysis (IRR/MOIC)" },
+          { "value": "key_risks", "label": "Key Risks & Mitigants" },
+          { "value": "appendix", "label": "Appendix" }
+        ],
+        "default": [
+          "executive_summary",
+          "company_overview",
+          "market_analysis",
+          "financial_summary",
+          "deal_structure",
+          "returns_analysis",
+          "key_risks",
+          "appendix"
+        ],
+        "description": "Select which sections to include in the deck"
+      },
+      {
+        "key": "template_style",
+        "label": "Template Style",
+        "type": "radioGroup",
+        "required": true,
+        "options": [
+          { "value": "clean_dark", "label": "Clean Dark (dark navy headers, white body)" },
+          { "value": "classic_white", "label": "Classic White (all white, navy accents)" },
+          { "value": "modern_blue", "label": "Modern Blue (blue gradient headers)" }
+        ],
+        "default": "clean_dark"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": {
+      "type": "file",
+      "label": "IC Presentation Deck",
+      "fileType": ".pptx",
+      "description": "Formatted PowerPoint deck ready for review and refinement"
+    },
+    "secondary": {
+      "type": "markdown",
+      "label": "Generation Notes",
+      "description": "Data completeness summary, placeholder list, formatting notes, and suggested next steps"
+    }
+  },
+  "permissions": {
+    "fileRead": ["*.xlsx", "*.csv", "*.pdf"],
+    "fileWrite": ["output/*"],
+    "network": false,
+    "tools": ["Read", "Write", "Bash(python3 *)"]
+  }
+}
